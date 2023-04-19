@@ -160,11 +160,11 @@ class playGame extends Phaser.Scene {
     this.input.on('dragenter', function (pointer, gameObject, target) {
 
       gameObject.setAlpha(0)
-      let row = Math.floor((pointer.y - gameOptions.boardOffset.y) / gameOptions.gemSize);
-      let col = Math.floor((pointer.x - gameOptions.boardOffset.x) / gameOptions.gemSize);
-      // console.log('row ' + row + ', col ' + col)
-      currentShape.x = col
-      currentShape.y = row - 1
+      /*  let row = Math.floor((pointer.y - gameOptions.boardOffset.y) / gameOptions.gemSize);
+       let col = Math.floor((pointer.x - gameOptions.boardOffset.x) / gameOptions.gemSize);
+       // console.log('row ' + row + ', col ' + col)
+       currentShape.x = col
+       currentShape.y = row */
 
     }, this)
     this.placed = false
@@ -176,9 +176,9 @@ class playGame extends Phaser.Scene {
       let col = Math.floor((pointer.x - gameOptions.boardOffset.x) / gameOptions.gemSize);
       //   console.log('row ' + row + ', col ' + col)
       currentShape.prevX = col
-      currentShape.prevY = row - 1
+      currentShape.prevY = row
       currentShape.x = col
-      currentShape.y = row - 1
+      currentShape.y = row
       this.applyShape('preview')
       if (this.collides()) {
         this.previewCollides()
@@ -547,18 +547,20 @@ class playGame extends Phaser.Scene {
   }
   collidesCustom(r, c, scene, object) {
     //for the size of the shape (row x column)
-    for (var row = 0; row < currentShape.shape.length; row++) {
-      for (var col = 0; col < currentShape.shape[row].length; col++) {
+    var doesCollide = 0
+    var testShape = clone(currentShape.shape)
+    for (var row = 0; row < testShape.length; row++) {
+      for (var col = 0; col < testShape[row].length; col++) {
         //if its not empty
-        if (currentShape.shape[row][col] !== 0) {
+        if (testShape[row][col] !== 0) {
           //if it collides, return true
           if (this.gameArray[r + row] === undefined || this.gameArray[r + row][c + col] === undefined || this.gameArray[r + row][c + col].value !== 0) {
-            return true;
+            return true
           }
         }
       }
     }
-    return false;
+    return false
   }
   validPick(row, column) {
     return row >= 0 && row < this.height && column >= 0 && column < this.width && this.gameArray[row] != undefined && this.gameArray[row][column] != undefined;
@@ -630,6 +632,14 @@ class playGame extends Phaser.Scene {
 }
 
 
+/**
+ * Clones an object.
+ * @param  {Object} obj The object to clone.
+ * @return {Object}     The cloned object.
+ */
+function clone(obj) {
+  return JSON.parse(JSON.stringify(obj));
+}
 
 
 /**
