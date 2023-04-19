@@ -164,7 +164,7 @@ class playGame extends Phaser.Scene {
       let col = Math.floor((pointer.x - gameOptions.boardOffset.x) / gameOptions.gemSize);
       // console.log('row ' + row + ', col ' + col)
       currentShape.x = col
-      currentShape.y = row
+      currentShape.y = row - 1
 
     }, this)
     this.placed = false
@@ -176,9 +176,9 @@ class playGame extends Phaser.Scene {
       let col = Math.floor((pointer.x - gameOptions.boardOffset.x) / gameOptions.gemSize);
       //   console.log('row ' + row + ', col ' + col)
       currentShape.prevX = col
-      currentShape.prevY = row
+      currentShape.prevY = row - 1
       currentShape.x = col
-      currentShape.y = row
+      currentShape.y = row - 1
       this.applyShape('preview')
       if (this.collides()) {
         this.previewCollides()
